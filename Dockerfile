@@ -131,7 +131,7 @@ COPY configs/nginx.conf /usr/local/nginx/conf/
 COPY configs/php.ini /usr/local/php/etc/
 
 #Update php pool config
-COPY configs/www.conf /usr/local/php/etc/php-fpm.d
+COPY configs/www.conf /usr/local/php/etc/php-fpm.d/
 
 #Start
 COPY configs/start.sh /
