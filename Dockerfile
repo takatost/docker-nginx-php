@@ -139,7 +139,7 @@ RUN apt-get remove -y gcc \
     chown -R www:www /data/www
 
 #Add supervisord conf
-RUN mkdir /etc/supervisor/conf.d
+RUN mkdir -p /etc/supervisor/conf.d
 
 COPY configs/supervisord.conf /etc/supervisor/
 COPY configs/conf.d/ /etc/supervisor/conf.d/
