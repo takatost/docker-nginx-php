@@ -18,6 +18,7 @@ RUN set -x && \
     libtool \
     make \
     cmake \
+    expect \
     dstat && \
 
 #Install PHP library
@@ -102,6 +103,23 @@ RUN set -x && \
     cd /home/nginx-php/php-$PHP_VERSION && \
     cp /usr/local/php/etc/php-fpm.conf.default /usr/local/php/etc/php-fpm.conf && \
     ln -s /usr/local/php/bin/php /usr/local/bin/php && \
+    spawn curl -o /tmp/go-pear.phar https://pear.php.net/go-pear.phar && \
+    expect eof && \
+    spawn /usr/local/php/bin/php /tmp/go-pear.phar && \
+    expect "1-11, 'all' or Enter to continue:" && \
+    send "\r" && \
+    expect eof && \
+    spawn rm /tmp/go-pear.phar && \
+
+#Install php-kafka
+    mkdir /tmp/librdkafka && \
+    cd /tmp/librdkafka && \
+    git clone https://github.com/edenhill/librdkafka.git . && \
+    ./configure && \
+    make && \
+    make install && \
+    /usr/local/php/bin/pecl install channel://pecl.php.net/rdkafka-beta && \
+    rm -rf /tmp/librdkafka && \
 
 #Install supervisor
     easy_install supervisor && \
@@ -113,6 +131,7 @@ RUN set -x && \
     automake \
     libtool \
     make \
+    expect \
     cmake && \
     apt-get clean all && \
     rm -rf /tmp/* /etc/my.cnf{,.d} && \
