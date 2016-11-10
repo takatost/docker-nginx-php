@@ -9,4 +9,8 @@ set -e
 export PATH=$PATH:$Nginx_Install_Dir/sbin
 export PATH=$PATH:$Nginx_Install_Dir/bin
 
+rm -rf /etc/default/locale
+env >> /etc/default/locale
+/etc/init.d/cron start
+
 /usr/local/bin/supervisord -n -c /etc/supervisord.conf
