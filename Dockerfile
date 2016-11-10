@@ -109,6 +109,7 @@ RUN easy_install supervisor && \
 
 #Install php-kafka
 COPY configs/pear_install.sh /tmp/
+COPY configs/go-pear.phar /tmp/
 RUN cd /tmp && \
     chmod 0744 pear_install.sh && \
     /usr/bin/expect pear_install.sh && \
