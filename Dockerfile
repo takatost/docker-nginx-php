@@ -31,19 +31,19 @@ RUN apt-get install -y libbz2-dev \
     libxml2-dev \
     libpng++-dev \
     libmcrypt-dev \
-    python-setuptools && \
+    python-setuptools
 
 #Add user
-    mkdir -p /data/www && \
-    useradd -r -s /sbin/nologin -d /data/www -m -k no www && \
+RUN mkdir -p /data/www && \
+    useradd -r -s /sbin/nologin -d /data/www -m -k no www
 
 #Download nginx & php
-    mkdir -p /home/nginx-php && cd $_ && \
+RUN mkdir -p /home/nginx-php && cd $_ && \
     curl -Lk http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz | gunzip | tar x -C /home/nginx-php && \
-    curl -Lk http://php.net/distributions/php-$PHP_VERSION.tar.gz | gunzip | tar x -C /home/nginx-php && \
+    curl -Lk http://php.net/distributions/php-$PHP_VERSION.tar.gz | gunzip | tar x -C /home/nginx-php
 
 #Make install nginx
-    cd /home/nginx-php/nginx-$NGINX_VERSION && \
+RUN cd /home/nginx-php/nginx-$NGINX_VERSION && \
     ./configure --prefix=/usr/local/nginx \
     --user=www --group=www \
     --error-log-path=/var/log/nginx_error.log \
@@ -55,10 +55,10 @@ RUN apt-get install -y libbz2-dev \
     --without-mail_imap_module \
     --with-http_gzip_static_module && \
     make && make install && \
-    ln -s /usr/local/nginx/sbin/nginx /usr/local/bin/nginx && \
+    ln -s /usr/local/nginx/sbin/nginx /usr/local/bin/nginx
 
 #Make install php
-    cd /home/nginx-php/php-$PHP_VERSION && \
+RUN cd /home/nginx-php/php-$PHP_VERSION && \
     ./configure --prefix=/usr/local/php \
     --with-config-file-path=/usr/local/php/etc \
     --with-config-file-scan-dir=/usr/local/php/etc/php.d \
@@ -101,14 +101,15 @@ RUN apt-get install -y libbz2-dev \
 #Install php-fpm
     cd /home/nginx-php/php-$PHP_VERSION && \
     cp /usr/local/php/etc/php-fpm.conf.default /usr/local/php/etc/php-fpm.conf && \
-    ln -s /usr/local/php/bin/php /usr/local/bin/php && \
+    ln -s /usr/local/php/bin/php /usr/local/bin/php
 
 #Install supervisor
-    easy_install supervisor && \
+RUN easy_install supervisor && \
     mkdir -p /var/{log/supervisor,run/{sshd,supervisord}}
 
 #Install php-kafka
 COPY configs/pear_install.sh /tmp/
+COPY configs/go-pear.phar /tmp/
 RUN cd /tmp && \
     chmod 0744 pear_install.sh && \
     /usr/bin/expect pear_install.sh && \
@@ -138,7 +139,10 @@ RUN apt-get remove -y gcc \
     chown -R www:www /data/www
 
 #Add supervisord conf
-COPY configs/supervisord.conf /etc/
+RUN mkdir -p /etc/supervisor/conf.d
+
+COPY configs/supervisord.conf /etc/supervisor/
+COPY configs/conf.d/ /etc/supervisor/conf.d/
 
 #Update nginx config
 COPY configs/nginx.conf /usr/local/nginx/conf/

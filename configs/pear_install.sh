@@ -1,7 +1,4 @@
 #!/usr/bin/expect
-spawn /usr/bin/curl -o /tmp/go-pear.phar http://pear.php.net/go-pear.phar
-expect eof
-
 spawn php /tmp/go-pear.phar
 
 expect "1-11, 'all' or Enter to continue:"

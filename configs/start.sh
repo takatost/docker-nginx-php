@@ -13,4 +13,4 @@ rm -rf /etc/default/locale
 env >> /etc/default/locale
 /etc/init.d/cron start
 
-/usr/local/bin/supervisord -n -c /etc/supervisord.conf
+/usr/local/bin/supervisord -n -c /etc/supervisor/supervisord.conf
