@@ -5,10 +5,10 @@ MAINTAINER takatost <takatost@gmail.com>
 ENV NGINX_VERSION 1.11.5
 ENV PHP_VERSION 7.0.12
 
-RUN apt-get update
+RUN set -x
 
-RUN set -x && \
-    apt-get install -y git \
+RUN apt-get update
+RUN apt-get install -y git \
     curl \
     cron \
     gcc \
@@ -19,10 +19,10 @@ RUN set -x && \
     make \
     cmake \
     expect \
-    dstat && \
+    dstat
 
 #Install PHP library
-    apt-get install -y libbz2-dev \
+RUN apt-get install -y libbz2-dev \
     libcurl4-openssl-dev\
     libssl-dev \
     libgd2-dev \
@@ -108,9 +108,10 @@ RUN set -x && \
     mkdir -p /var/{log/supervisor,run/{sshd,supervisord}}
 
 #Install php-kafka
-COPY configs/pear_install.sh /tmp/pear_install.sh
-RUN chmod +x /tmp/pear_install.sh && \
-    /tmp/pear_install.sh && \
+COPY configs/pear_install.sh /tmp/
+RUN cd /tmp && \
+    chmod 0744 pear_install.sh && \
+    /usr/bin/expect pear_install.sh && \
     mkdir /tmp/librdkafka && \
     cd /tmp/librdkafka && \
     git clone https://github.com/edenhill/librdkafka.git . && \
@@ -118,7 +119,7 @@ RUN chmod +x /tmp/pear_install.sh && \
     make && \
     make install && \
     /usr/local/php/bin/pecl install channel://pecl.php.net/rdkafka-beta && \
-    rm -rf /tmp/librdkafka && \
+    rm -rf /tmp/librdkafka
 
 #Clean OS
 RUN apt-get remove -y gcc \
@@ -149,7 +150,7 @@ COPY configs/php.ini /usr/local/php/etc/
 COPY configs/www.conf /usr/local/php/etc/php-fpm.d/
 
 #Add cron config
-COPY configs/crontab_www /var/spool/cron/crontabs/www
+COPY configs/www /var/spool/cron/crontabs/
 RUN chown -R www:crontab /var/spool/cron/crontabs/www && \
  	chmod 600 /var/spool/cron/crontabs/www && \
     touch /var/log/cron.log

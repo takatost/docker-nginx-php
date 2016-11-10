@@ -1,5 +1,5 @@
 #!/usr/bin/expect
-spawn wget -O /tmp/go-pear.phar http://pear.php.net/go-pear.phar
+spawn /usr/bin/curl -o /tmp/go-pear.phar http://pear.php.net/go-pear.phar
 expect eof
 
 spawn php /tmp/go-pear.phar
