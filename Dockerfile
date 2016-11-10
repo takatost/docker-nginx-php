@@ -10,6 +10,7 @@ RUN apt-get update
 RUN set -x && \
     apt-get install -y git \
     curl \
+    cron \
     gcc \
     build-essential  \
     autoconf \
@@ -132,6 +133,12 @@ COPY configs/php.ini /usr/local/php/etc/
 
 #Update php pool config
 COPY configs/www.conf /usr/local/php/etc/php-fpm.d/
+
+#Add cron config
+COPY configs/crontab_www /var/spool/cron/crontabs/www
+RUN chown -R www:crontab /var/spool/cron/crontabs/www && \
+ 	chmod 600 /var/spool/cron/crontabs/www && \
+    touch /var/log/cron.log
 
 #Start
 COPY configs/start.sh /
