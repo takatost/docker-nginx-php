@@ -98,20 +98,19 @@ RUN set -x && \
     --without-pear && \
     make && make install && \
 
-
 #Install php-fpm
     cd /home/nginx-php/php-$PHP_VERSION && \
     cp /usr/local/php/etc/php-fpm.conf.default /usr/local/php/etc/php-fpm.conf && \
     ln -s /usr/local/php/bin/php /usr/local/bin/php && \
-    spawn curl -o /tmp/go-pear.phar https://pear.php.net/go-pear.phar && \
-    expect eof && \
-    spawn /usr/local/php/bin/php /tmp/go-pear.phar && \
-    expect "1-11, 'all' or Enter to continue:" && \
-    send "\r" && \
-    expect eof && \
-    spawn rm /tmp/go-pear.phar && \
+
+#Install supervisor
+    easy_install supervisor && \
+    mkdir -p /var/{log/supervisor,run/{sshd,supervisord}}
 
 #Install php-kafka
+COPY configs/pear_install.sh /tmp/pear_install.sh
+RUN chmod +x /tmp/pear_install.sh && \
+    /tmp/pear_install.sh && \
     mkdir /tmp/librdkafka && \
     cd /tmp/librdkafka && \
     git clone https://github.com/edenhill/librdkafka.git . && \
@@ -121,12 +120,8 @@ RUN set -x && \
     /usr/local/php/bin/pecl install channel://pecl.php.net/rdkafka-beta && \
     rm -rf /tmp/librdkafka && \
 
-#Install supervisor
-    easy_install supervisor && \
-    mkdir -p /var/{log/supervisor,run/{sshd,supervisord}} && \
-
 #Clean OS
-    apt-get remove -y gcc \
+RUN apt-get remove -y gcc \
     autoconf \
     automake \
     libtool \
