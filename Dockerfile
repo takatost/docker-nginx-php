@@ -116,7 +116,7 @@ RUN cd /tmp && \
     mkdir /tmp/librdkafka && \
     cd /tmp/librdkafka && \
     git clone https://github.com/edenhill/librdkafka.git . && \
-    ./configure -X broker.version.fallback=0.8.2.1 && \
+    ./configure && \
     make && \
     make install && \
     /usr/local/php/bin/pecl install channel://pecl.php.net/rdkafka-beta && \
