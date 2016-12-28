@@ -140,7 +140,6 @@ RUN apt-get update && \
     cmake && \
     apt-get clean all && \
     rm -rf /tmp/* /etc/my.cnf{,.d} && \
-    find /var/log -type f -delete && \
     rm -rf /home/nginx-php && \
 
 #Change Mod from webdir
