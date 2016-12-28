@@ -129,11 +129,14 @@ RUN apt-get update && \
 
 #Clean OS
     apt-get remove -y gcc \
+    build-essential  \
     autoconf \
     automake \
     libtool \
     make \
     expect \
+    dstat \
+    python-setuptools \
     cmake && \
     apt-get clean all && \
     rm -rf /tmp/* /etc/my.cnf{,.d} && \
