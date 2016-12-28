@@ -39,16 +39,16 @@ RUN apt-get update && \
     libmcrypt-dev \
     python-setuptools && \
 
-# 
+#Add user
     mkdir -p /data/www && \
     useradd -r -s /sbin/nologin -d /data/www -m -k no www && \
 
-# 
+#Download nginx & php
     mkdir -p /home/nginx-php && cd $_ && \
     curl -Lk http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz | gunzip | tar x -C /home/nginx-php && \
     curl -Lk http://php.net/distributions/php-$PHP_VERSION.tar.gz | gunzip | tar x -C /home/nginx-php && \
 
-# 
+#Make install nginx
     cd /home/nginx-php/nginx-$NGINX_VERSION && \
     ./configure --prefix=/usr/local/nginx \
     --user=www --group=www \
@@ -64,7 +64,7 @@ RUN apt-get update && \
     make && make install && \
     ln -s /usr/local/nginx/sbin/nginx /usr/local/bin/nginx && \
 
-# 
+#Make install php
     cd /home/nginx-php/php-$PHP_VERSION && \
     ./configure --prefix=/usr/local/php \
     --with-config-file-path=/usr/local/php/etc \
