@@ -50,6 +50,7 @@ RUN cd /home/nginx-php/nginx-$NGINX_VERSION && \
     --http-log-path=/var/log/nginx_access.log \
     --pid-path=/var/run/nginx.pid \
     --with-pcre \
+    --with-http_v2_module \
     --with-http_ssl_module \
     --without-mail_pop3_module \
     --without-mail_imap_module \
