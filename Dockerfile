@@ -9,7 +9,7 @@ COPY configs/pear_install.sh /tmp/
 COPY configs/go-pear.phar /tmp/
 
 #Add cron config
-COPY schedule.sh /
+COPY configs/schedule.sh /
 COPY configs/www /var/spool/cron/crontabs/
 
 COPY configs/start.sh /
