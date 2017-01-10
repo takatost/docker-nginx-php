@@ -9,6 +9,7 @@ COPY configs/pear_install.sh /tmp/
 COPY configs/go-pear.phar /tmp/
 
 #Add cron config
+COPY schedule.sh /
 COPY configs/www /var/spool/cron/crontabs/
 
 COPY configs/start.sh /
@@ -149,6 +150,7 @@ RUN apt-get update && \
     mkdir -p /etc/supervisor/conf.d && \
 
 #Modify Cron Configs
+	chown www.www /schedule.sh && \
     chown -R www:crontab /var/spool/cron/crontabs/www && \
     chmod 600 /var/spool/cron/crontabs/www && \
     touch /var/log/cron.log && \

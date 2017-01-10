@@ -1,1 +1,1 @@
-* * * * * [[ $SCHEDULE_ON = "yes" ]] && /usr/local/bin/php /data/www/artisan schedule:run >> /dev/null 2>&1
+* * * * * /schedule.sh >> /dev/null 2>&1
