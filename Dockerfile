@@ -128,6 +128,11 @@ RUN apt-get update && \
     /usr/local/php/bin/pecl install channel://pecl.php.net/rdkafka-beta && \
     rm -rf /tmp/librdkafka && \
 
+#Install NodeJs & ApiDoc
+    curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install apidoc -g && \
+
 #Clean OS
     apt-get remove -y gcc \
     build-essential  \
