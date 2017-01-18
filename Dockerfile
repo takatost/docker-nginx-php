@@ -129,6 +129,7 @@ RUN apt-get update && \
     rm -rf /tmp/librdkafka && \
 
 #Install NodeJs & ApiDoc
+    cd /tmp && \
     curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
     apt-get install -y nodejs && \
     npm install apidoc -g && \
