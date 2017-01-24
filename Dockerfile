@@ -39,6 +39,9 @@ RUN apt-get update && \
     libpng++-dev \
     libmcrypt-dev \
     python-setuptools && \
+    
+#Set Timezone
+    cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
 
 #Add user
     mkdir -p /data/www && \
