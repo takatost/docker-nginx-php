@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM logstash:5.2.0
 
 MAINTAINER takatost <takatost@gmail.com>
 
@@ -166,6 +166,9 @@ RUN apt-get update && \
 
 #Add Start Script Priviliages
     chmod +x /start.sh
+
+#Copy LogStash Confs
+COPY configs/logstash/ /etc/logstash/conf.d/
 
 COPY configs/supervisord.conf /etc/supervisor/
 COPY configs/conf.d/ /etc/supervisor/conf.d/
