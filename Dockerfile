@@ -38,8 +38,9 @@ RUN apt-get update && \
     libxml2-dev \
     libpng++-dev \
     libmcrypt-dev \
-    python-setuptools && \
-    
+    python-setuptools \
+    vim && \
+
 #Set Timezone
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
 
