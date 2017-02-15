@@ -38,7 +38,8 @@ RUN apt-get update && \
     libxml2-dev \
     libpng++-dev \
     libmcrypt-dev \
-    python-setuptools && \
+    python-setuptools \
+    vim && \
 
 #Add user
     mkdir -p /data/www && \
