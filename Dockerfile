@@ -41,6 +41,9 @@ RUN apt-get update && \
     python-setuptools \
     vim && \
 
+#Set Timezone
+    cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+
 #Add user
     mkdir -p /data/www && \
     useradd -r -s /sbin/nologin -d /data/www -m -k no www && \
