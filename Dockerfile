@@ -160,7 +160,8 @@ RUN apt-get update && \
     mkdir -p /etc/supervisor/conf.d && \
 
 #Modify Cron Configs
-	chown www.www /schedule.sh && \
+    chown www.www /schedule.sh && \
+    chmod +x /schedule.sh && \
     chown -R www:crontab /var/spool/cron/crontabs/www && \
     chmod 600 /var/spool/cron/crontabs/www && \
     touch /var/log/cron.log && \
