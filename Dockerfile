@@ -184,6 +184,8 @@ COPY configs/php.ini /usr/local/php/etc/
 #Update php pool config
 COPY configs/www.conf /usr/local/php/etc/php-fpm.d/
 
+WORKDIR /data/www
+
 #Set port
 EXPOSE 80 443
 
