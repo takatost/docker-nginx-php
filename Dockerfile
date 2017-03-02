@@ -190,7 +190,7 @@ COPY configs/php.ini /usr/local/php/etc/
 COPY configs/www.conf /usr/local/php/etc/php-fpm.d/
 
 #Add Filebeat config
-COPY filebeat.yml /filebeat.yml
+COPY configs/filebeat.yml /filebeat.yml
 
 WORKDIR /data/www
 
