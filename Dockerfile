@@ -1,9 +1,11 @@
-FROM logstash:5.2.0
+FROM debian:jessie
 
 MAINTAINER takatost <takatost@gmail.com>
 
 ENV NGINX_VERSION 1.11.5
 ENV PHP_VERSION 7.0.12
+ENV FILEBEAT_VERSION=5.2.2 \
+    FILEBEAT_SHA1=0f8e2f5f1145051435352b0e6a8b776040ea36e4
 
 COPY configs/pear_install.sh /tmp/
 COPY configs/go-pear.phar /tmp/
@@ -18,6 +20,7 @@ RUN set -x
 
 RUN apt-get update && \
     apt-get install -y git \
+    wget \
     curl \
     cron \
     gcc \
@@ -132,11 +135,15 @@ RUN apt-get update && \
     /usr/local/php/bin/pecl install channel://pecl.php.net/rdkafka-beta && \
     rm -rf /tmp/librdkafka && \
 
-#Install NodeJs & ApiDoc
+#Install filebeat
+    wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-${FILEBEAT_VERSION}-linux-x86_64.tar.gz -O /tmp/filebeat.tar.gz && \
     cd /tmp && \
-    curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
-    apt-get install -y nodejs && \
-    npm install apidoc -g && \
+    echo "${FILEBEAT_SHA1}  filebeat.tar.gz" | sha1sum -c - && \
+    tar xzvf filebeat.tar.gz && \
+    cd filebeat-* && \
+    cp filebeat /bin && \
+    cd /tmp && \
+    rm -rf filebeat* && \
 
 #Clean OS
     apt-get remove -y gcc \
@@ -147,10 +154,11 @@ RUN apt-get update && \
     make \
     expect \
     dstat \
+    wget \
     python-setuptools \
     cmake && \
     apt-get clean all && \
-    rm -rf /tmp/* /etc/my.cnf{,.d} && \
+    rm -rf /var/lib/apt/lists/* /var/tmp/* /tmp/* /etc/my.cnf{,.d} && \
     rm -rf /home/nginx-php && \
 
 #Change Mod from webdir
@@ -169,9 +177,6 @@ RUN apt-get update && \
 #Add Start Script Priviliages
     chmod +x /start.sh
 
-#Copy LogStash Confs
-COPY configs/logstash/ /etc/logstash/conf.d/
-
 COPY configs/supervisord.conf /etc/supervisor/
 COPY configs/conf.d/ /etc/supervisor/conf.d/
 
@@ -183,6 +188,9 @@ COPY configs/php.ini /usr/local/php/etc/
 
 #Update php pool config
 COPY configs/www.conf /usr/local/php/etc/php-fpm.d/
+
+#Add Filebeat config
+COPY filebeat.yml /filebeat.yml
 
 WORKDIR /data/www
 
