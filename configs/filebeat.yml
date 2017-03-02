@@ -97,7 +97,7 @@ output.redis:
   key: ${FILEBEAT_REDIS_KEY:logstash-micro-service}
 
   # The password to authenticate with. The default is no authentication.
-  password: ${FILEBEAT_REDIS_PASSWORD}
+  password: ${FILEBEAT_REDIS_PASSWORD:}
 
   # The Redis database number where the events are published. The default is 0.
   db: ${FILEBEAT_REDIS_DB:0}
