@@ -1,1 +1,1 @@
-* * * * * /schedule.sh >> /dev/null 2>&1
+* * * * * /schedule.sh >> /tmp/cron.log 2>&1
