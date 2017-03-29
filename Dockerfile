@@ -177,6 +177,12 @@ RUN apt-get update && \
 #Add Start Script Priviliages
     chmod +x /start.sh
 
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+	php composer-setup.php  --install-dir=/bin --filename=composer && \
+	chmod +x /bin/composer && \
+	php -r "unlink('composer-setup.php');" && \
+	composer global require "hirak/prestissimo:^0.3"
+
 COPY configs/supervisord.conf /etc/supervisor/
 COPY configs/conf.d/ /etc/supervisor/conf.d/
 
