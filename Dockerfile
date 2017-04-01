@@ -172,6 +172,7 @@ RUN apt-get update && \
     chmod +x /schedule.sh && \
     crontab /etc/cron.d/www && \
     touch /var/log/cron.log && \
+    touch /tmp/cron.log && \
     chown www.www /tmp/cron.log && \
 
 #Add Start Script Priviliages
