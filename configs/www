@@ -1,1 +1,2 @@
-* * * * * www . /project_env.sh; /schedule.sh >> /tmp/cron.log 2>&1
+* * * * * www date >> /tmp/cron.log 2>&1
+* * * * * www /project_env.sh && /schedule.sh >> /tmp/cron.log 2>&1
