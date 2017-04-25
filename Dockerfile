@@ -122,19 +122,6 @@ RUN apt-get update && \
     easy_install supervisor && \
     mkdir -p /var/{log/supervisor,run/{sshd,supervisord}} && \
 
-#Install php-kafka
-    cd /tmp && \
-    chmod 0744 pear_install.sh && \
-    /usr/bin/expect pear_install.sh && \
-    mkdir /tmp/librdkafka && \
-    cd /tmp/librdkafka && \
-    git clone https://github.com/edenhill/librdkafka.git . && \
-    ./configure && \
-    make && \
-    make install && \
-    /usr/local/php/bin/pecl install channel://pecl.php.net/rdkafka-beta && \
-    rm -rf /tmp/librdkafka && \
-
 #Install filebeat
     wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-${FILEBEAT_VERSION}-linux-x86_64.tar.gz -O /tmp/filebeat.tar.gz && \
     cd /tmp && \
